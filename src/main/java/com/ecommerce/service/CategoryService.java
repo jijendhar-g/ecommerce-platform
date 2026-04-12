@@ -46,6 +46,9 @@ public class CategoryService {
     public CategoryResponse updateCategory(Long id, CategoryRequest request) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", id));
+        if (!category.getName().equals(request.name()) && categoryRepository.existsByName(request.name())) {
+            throw new BadRequestException("Category name already exists: " + request.name());
+        }
         category.setName(request.name());
         category.setDescription(request.description());
         return CategoryResponse.from(categoryRepository.save(category));

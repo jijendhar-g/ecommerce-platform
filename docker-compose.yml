@@ -30,7 +30,7 @@ services:
       DATABASE_URL: jdbc:mysql://mysql:3306/ecommercedb
       DATABASE_USERNAME: ecommerce
       DATABASE_PASSWORD: ecommerce123
-      JWT_SECRET: your-256-bit-secret-key-change-in-production
+      JWT_SECRET: ${JWT_SECRET:your-256-bit-secret-key-change-in-production}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
     ports:
       - "8080:8080"
