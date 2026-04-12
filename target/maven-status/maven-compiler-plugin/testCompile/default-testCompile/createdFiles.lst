@@ -1,0 +1,7 @@
+com/ecommerce/controller/AuthControllerTest.class
+com/ecommerce/controller/ProductControllerTest.class
+com/ecommerce/service/CartServiceTest.class
+com/ecommerce/EcommercePlatformApplicationTests.class
+com/ecommerce/service/ProductServiceTest.class
+com/ecommerce/service/UserServiceTest.class
+com/ecommerce/service/OrderServiceTest.class
