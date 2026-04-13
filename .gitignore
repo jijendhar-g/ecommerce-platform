@@ -17,3 +17,21 @@ target/
 *.swp
 *.swo
 .DS_Store
+
+# Environment files (never commit real secrets)
+.env
+.env.local
+.env.*.local
+.env.aws.local
+.env.production.local
+.env.development.local
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# AWS credentials
+*.pem
+*.key
+
