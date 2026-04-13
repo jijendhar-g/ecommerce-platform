@@ -1,14 +1,15 @@
 version: '3.8'
 
 services:
+  # MySQL Database
   mysql:
     image: mysql:8.0
     container_name: ecommerce-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
       MYSQL_DATABASE: ecommercedb
-      MYSQL_USER: ecommerce
-      MYSQL_PASSWORD: ecommerce123
+      MYSQL_USER: ${DB_USERNAME:-ecommerce}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ecommerce123}
     ports:
       - "3306:3306"
     volumes:
@@ -16,24 +17,75 @@ services:
     networks:
       - ecommerce-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
 
-  app:
-    build: .
-    container_name: ecommerce-app
+  # Spring Boot Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-backend
     depends_on:
       mysql:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      DB_USERNAME: ecommerce
-      DB_PASSWORD: ecommerce123
+      DB_USERNAME: ${DB_USERNAME:-ecommerce}
+      DB_PASSWORD: ${DB_PASSWORD:-ecommerce123}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ecommercedb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      JWT_SECRET: ${JWT_SECRET:-your-jwt-secret-key-must-be-at-least-256-bits-long-for-security}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-sk_test_placeholder}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}
+      MAIL_HOST: ${MAIL_HOST:-mailhog}
+      MAIL_PORT: ${MAIL_PORT:-1025}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
     ports:
       - "8080:8080"
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/api/v1/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080/api/v1}
+        VITE_STRIPE_PUBLISHABLE_KEY: ${VITE_STRIPE_PUBLISHABLE_KEY:-pk_test_placeholder}
+    container_name: ecommerce-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:80"
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Mailhog - Local email testing
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: ecommerce-mailhog
+    ports:
+      - "1025:1025"   # SMTP port
+      - "8025:8025"   # Web UI port
     networks:
       - ecommerce-network
 

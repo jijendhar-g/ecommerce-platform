@@ -1,6 +1,6 @@
 # 🛒 E-Commerce Platform
 
-[![CI/CD Pipeline](https://github.com/your-org/ecommerce-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/ecommerce-platform/actions/workflows/ci.yml)
+[![CI/CD Pipeline](https://github.com/jijendhar-g/ecommerce-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/jijendhar-g/ecommerce-platform/actions/workflows/ci.yml)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://openjdk.java.net/projects/jdk/17/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.4-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
