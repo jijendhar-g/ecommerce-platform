@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 40px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header { background-color: #4CAF50; color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .body { padding: 30px; color: #333333; }
+        .body h2 { color: #4CAF50; }
+        .order-details { background-color: #f9f9f9; border-radius: 6px; padding: 20px; margin: 20px 0; }
+        .order-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eeeeee; }
+        .order-item:last-child { border-bottom: none; }
+        .total { font-size: 18px; font-weight: bold; color: #333333; text-align: right; margin-top: 15px; }
+        .footer { background-color: #f4f4f4; padding: 20px; text-align: center; color: #888888; font-size: 12px; }
+        .btn { display: inline-block; background-color: #4CAF50; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>&#10003; Order Confirmed!</h1>
+        </div>
+        <div class="body">
+            <h2>Thank you for your order, {{firstName}}!</h2>
+            <p>We've received your order and it's being processed. You'll receive another email when your order ships.</p>
+
+            <div class="order-details">
+                <p><strong>Order ID:</strong> #{{orderId}}</p>
+                <p><strong>Order Date:</strong> {{orderDate}}</p>
+                <p><strong>Estimated Delivery:</strong> {{estimatedDelivery}}</p>
+            </div>
+
+            <h3>Order Summary</h3>
+            <div class="order-details">
+                {{#items}}
+                <div class="order-item">
+                    <span>{{productName}} x{{quantity}}</span>
+                    <span>${{price}}</span>
+                </div>
+                {{/items}}
+                <div class="total">Total: ${{totalAmount}}</div>
+            </div>
+
+            <h3>Shipping Address</h3>
+            <div class="order-details">
+                <p>{{shippingAddress}}</p>
+            </div>
+
+            <a href="{{orderTrackingUrl}}" class="btn">Track Your Order</a>
+        </div>
+        <div class="footer">
+            <p>If you have any questions, contact us at support@ecommerce.com</p>
+            <p>&copy; 2024 E-Commerce Platform. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

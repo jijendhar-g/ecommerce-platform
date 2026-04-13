@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Order Has Shipped</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 40px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header { background-color: #2196F3; color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .body { padding: 30px; color: #333333; }
+        .body h2 { color: #2196F3; }
+        .info-box { background-color: #f0f7ff; border-left: 4px solid #2196F3; border-radius: 4px; padding: 20px; margin: 20px 0; }
+        .tracking-box { background-color: #f9f9f9; border-radius: 6px; padding: 20px; margin: 20px 0; text-align: center; }
+        .tracking-number { font-size: 24px; font-weight: bold; color: #2196F3; letter-spacing: 2px; }
+        .footer { background-color: #f4f4f4; padding: 20px; text-align: center; color: #888888; font-size: 12px; }
+        .btn { display: inline-block; background-color: #2196F3; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>&#128666; Your Order Is On Its Way!</h1>
+        </div>
+        <div class="body">
+            <h2>Great news, {{firstName}}!</h2>
+            <p>Your order #{{orderId}} has been shipped and is on its way to you.</p>
+
+            <div class="tracking-box">
+                <p><strong>Tracking Number</strong></p>
+                <div class="tracking-number">{{trackingNumber}}</div>
+                <p>Carrier: {{carrier}}</p>
+                <a href="{{trackingUrl}}" class="btn">Track Package</a>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Estimated Delivery:</strong> {{estimatedDelivery}}</p>
+                <p><strong>Shipping to:</strong> {{shippingAddress}}</p>
+            </div>
+
+            <h3>Items Shipped</h3>
+            {{#items}}
+            <p>&#10003; {{productName}} x{{quantity}}</p>
+            {{/items}}
+        </div>
+        <div class="footer">
+            <p>If you have any questions, contact us at support@ecommerce.com</p>
+            <p>&copy; 2024 E-Commerce Platform. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
